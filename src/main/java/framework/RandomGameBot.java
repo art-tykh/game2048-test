@@ -12,7 +12,7 @@ public class RandomGameBot implements GameBot {
     private static final int SIZE = MOVES.length;
     private static final Random RANDOM = new Random();
 
-    public Keys makeMove() {
+    public Keys getMove() {
         return MOVES[RANDOM.nextInt(SIZE)];
     }
 }

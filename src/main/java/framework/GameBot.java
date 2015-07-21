@@ -11,6 +11,6 @@ public interface GameBot {
 
     public final Keys[] MOVES = new Keys[] {Keys.ARROW_DOWN, Keys.ARROW_UP, Keys.ARROW_LEFT, Keys.ARROW_RIGHT};
 
-    Keys makeMove();
+    Keys getMove();
 
 }

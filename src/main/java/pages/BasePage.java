@@ -1,7 +1,11 @@
 package pages;
 
+import framework.CustomWebDriver;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -20,8 +24,12 @@ public class BasePage {
     public WebDriver driver;
 
     public BasePage() {
-        driver = new FirefoxDriver();
+        driver = CustomWebDriver.getInstance().getDriver();
         PageFactory.initElements(driver, this);
+    }
+
+    public WebDriver getDriver() {
+        return driver;
     }
 
 }
