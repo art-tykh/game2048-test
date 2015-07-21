@@ -21,7 +21,6 @@ public class Game2048MainPageTest {
     @Test
     public void playGame2048() {
         //UserInteractionUtils.setBrowser();
-        //game2048MainPage.getGameState();
         game2048MainPage.playGame();
         //Assert.assertEquals("ww", a);
     }
