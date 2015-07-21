@@ -29,6 +29,9 @@ public class Game2048MainPage extends BasePage {
     @FindBy(className = "score-container")
     private WebElement gameScore;
 
+    @FindBy(className = "tile")
+    private List<WebElement> tiles;
+
     public Game2048MainPage() {
         driver.get("http://gabrielecirulli.github.io/2048/");
     }
@@ -48,7 +51,6 @@ public class Game2048MainPage extends BasePage {
             gridContainer.sendKeys(move);
             printCurrentBoard();
             i++;
-
         }
         String[] currentScore = gameScore.getText().split("\n");
         System.out.println("Your total score is: " + currentScore[0] + "\nNice game!");
@@ -70,7 +72,7 @@ public class Game2048MainPage extends BasePage {
                 for (int i = 0; i < size; i++) {
                     JSONArray cell = cells.getJSONArray(i);
                     for (int j = 0; j < size; j++) {
-                        int value = 0;
+                        long value = 0;
                         if (cell.get(j) instanceof JSONObject) {
                             JSONObject tile = new JSONObject(cell.get(j).toString());
                             value = tile.getInt("value");
@@ -78,13 +80,9 @@ public class Game2048MainPage extends BasePage {
                         tilesMatrix[j][i] = value;
                     }
                 }
-                for (int k = 0; k < size; k++) {
-                    System.out.print(" | ");
-                    for (int l = 0; l < size; l++) {
-                        System.out.print(tilesMatrix[k][l] + " | ");
-                    }
-                    System.out.print("\n");
-                }
+                printBoard(tilesMatrix, size);
+            } else {
+                printEndBoardState();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -105,6 +103,36 @@ public class Game2048MainPage extends BasePage {
             return null;
         } catch (NullPointerException e) {
             return null;
+        }
+    }
+
+    private void printEndBoardState() {
+        long [][] tilesMatrix = new long[4][4];
+        int i = 0;
+        int j = 0;
+        for (WebElement tile : tiles) {
+            tilesMatrix[i][j] = Long.valueOf(tile.getText()).longValue();
+            i++;
+            if (i > 3) {
+                i = 0;
+                j++;
+                if (j > 3) {
+                    j = 0;
+                }
+            }
+
+        }
+
+        printBoard(tilesMatrix, 4);
+    }
+
+    private void printBoard(long[][] board, int size) {
+        for (int k = 0; k < size; k++) {
+            System.out.print(" | ");
+            for (int l = 0; l < size; l++) {
+                System.out.print(board[k][l] + " | ");
+            }
+            System.out.print("\n");
         }
     }
 }
