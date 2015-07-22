@@ -22,4 +22,8 @@ For SafariDriver 2.45.0 you have to install SafariDriver [Extension](https://git
 
 **Chrome browser:**
 
-As for now, project supports only MacOS and Windows ChromeDriver. 
+As for now, project supports only MacOS and Windows ChromeDriver.
+
+**Firefox browser:*
+
+Performance issue. See [this](https://code.google.com/p/selenium/issues/detail?id=8551) opened bug.
