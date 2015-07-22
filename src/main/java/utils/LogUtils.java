@@ -1,22 +1,49 @@
 package utils;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
- * Created by mbp on 7/21/15.
+ * The {@code LogUtils} class represents prototype of Logging framework.
+ * For now logs are written to simple txt file.
+ *
+ * @author Artem Tykhonov
  */
 public class LogUtils {
 
     private static BufferedWriter writer = null;
 
+    /**
+     * Creates new log file and writes some logs to it
+     *
+     * @param text
+     *          the message to be logged
+     */
     public static void initLogFile(String text) {
         writeToFile(text, false);
     }
 
+    /**
+     * Adds logs to already existing log file
+     *
+     * @param text
+     *          the message to be logged
+     */
     public static void addToLogFile(String text) {
         writeToFile(text, true);
     }
 
+    /**
+     * Constructs a FileWriter object.
+     *
+     * @param text
+     *         the message to be logged
+     * @param isFileExists
+     *         if <code>true</code>, then data will be written
+     *         to the end of the file rather than the beginning.
+     */
     private static void writeToFile(String text, boolean isFileExists) {
         try {
             FileWriter fstream = new FileWriter("test-output/game2048_log.txt", isFileExists);

@@ -2,10 +2,11 @@ package framework;
 
 import org.openqa.selenium.Keys;
 
-import java.util.List;
-
 /**
- * Created by mbp on 7/21/15.
+ * Represents GameBot interface.
+ * Allows to create different game bots: random, smart(with prefered set of moves), reallySmart(that implements MiniMax algorithm), etc.
+ *
+ * @author Artem Tykhonov
  */
 public interface GameBot {
 

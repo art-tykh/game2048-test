@@ -10,7 +10,10 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by mbp on 7/21/15.
+ * The {@code DataProvider} class provides ability to work with *.properties files
+ * where any test data could be stored
+ *
+ * @author Artem Tykhonov
  */
 public class DataProvider  {
     private static DataProvider instance;

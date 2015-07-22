@@ -7,7 +7,7 @@ import org.testng.annotations.AfterClass;
 import java.util.Properties;
 
 /**
- * Created by mbp on 7/21/15.
+ * This class contains general methods for all future tests
  */
 public class BaseTest {
 

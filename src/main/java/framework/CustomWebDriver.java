@@ -3,17 +3,16 @@ package framework;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by mbp on 7/21/15.
+ * The {@code WaitUtils} class provides additional functionality to
+ * standard WebDriver
+ *
+ * @author Artem Tykhonov
  */
 public class CustomWebDriver {
 
@@ -33,6 +32,11 @@ public class CustomWebDriver {
         driver = initDriver();
     }
 
+    /**
+     *
+     * @return
+     *      the WebDriver instance
+     */
     public WebDriver getDriver() {
         if (driver == null) {
             initDriver();
@@ -40,6 +44,11 @@ public class CustomWebDriver {
         return driver;
     }
 
+    /**
+     *
+     * @return
+     *      the instance of CustomWebDriver
+     */
     public static CustomWebDriver getInstance() {
         Lock lock;
         if (instance == null) {
@@ -55,18 +64,19 @@ public class CustomWebDriver {
         return instance;
     }
 
-    public String getBrowser() {
-        return browser;
-    }
-
+    /**
+     * Factory that creates different browser instance, depends on the
+     * type of the browser
+     *
+     * @return
+     *      the WebDriver instance
+     */
     public WebDriver initDriver() {
         driver = null;
         if (browser.equals(FIREFOX)) {
             driver = new FirefoxDriver();
         } else if (browser.equals(SAFARI)) {
-            DesiredCapabilities capabilities = DesiredCapabilities.safari();
-            capabilities.setJavascriptEnabled(true);
-            driver = new SafariDriver(capabilities);
+            driver = new SafariDriver();
         } else if (browser.equals(CHROME)) {
             initChrome();
             driver = new ChromeDriver();
@@ -75,11 +85,18 @@ public class CustomWebDriver {
         return driver;
     }
 
+    /**
+     * Quites the driver
+     */
     public void terminate() {
         driver.quit();
         driver = null;
     }
 
+    /**
+     * Provides correct path for Chrome driver binaries depends on
+     * the OS
+     */
     private void initChrome() {
         String os = System.getProperty("os.name").toLowerCase();
         String userDir = System.getProperty("user.dir");
@@ -88,12 +105,16 @@ public class CustomWebDriver {
         if (os.contains(MAC)) {
             path = userDir + "/drivers/chromedriver_mac32";
         } else if (os.contains(WINDOWS)) {
-            path = userDir + "\\drivers\\chromedriver_win32";
+            path = userDir + "\\drivers\\chromedriver_win32.exe";
         }
         System.out.println(path);
         System.setProperty("webdriver.chrome.driver", path);
     }
 
+    /**
+     * Initializes default properties
+     * Default browser will be FIREFOX, unless other specified
+     */
     private void initProperties() {
         if (System.getProperty("test.browser") == null) {
             System.setProperty("test.browser", FIREFOX);

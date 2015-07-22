@@ -7,8 +7,9 @@ import org.json.JSONObject;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.FindBy;
 import pages.BasePage;
 import utils.LogUtils;
@@ -16,7 +17,6 @@ import utils.WaitUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.security.Key;
 import java.util.List;
 
 /**
@@ -28,6 +28,9 @@ public class Game2048MainPage extends BasePage {
 
     @FindBy(className = "grid-container")
     private WebElement gridContainer;
+
+    @FindBy(className = "restart-button")
+    private WebElement newGameButton;
 
     @FindBy(className = "game-over")
     private List<WebElement> gameOverMessage;
@@ -51,6 +54,7 @@ public class Game2048MainPage extends BasePage {
     public void playGame() {
         RandomGameBot randomGameBot = new RandomGameBot();
         long i = 0;
+        newGameButton.click();
         System.out.println("************* Game 2048 log *************\nInitial state");
         LogUtils.initLogFile("************* Game 2048 log *************\nInitial state\n");
         printCurrentBoard();
@@ -58,26 +62,17 @@ public class Game2048MainPage extends BasePage {
             System.out.println("Move #" + ++i);
             LogUtils.addToLogFile("Move #" + i + "\n");
             Keys move = randomGameBot.getMove();
-            if (getBrowser().equals(FIREFOX)) {
-                gridContainer.sendKeys(move);
-            } else {
-                makeMove(gridContainer, move);
-            }
+            makeMove(gridContainer,move);
             printCurrentBoard();
         }
 //        int j = 0;
 //        Keys[] move = {Keys.ARROW_DOWN, Keys.ARROW_RIGHT, Keys.ARROW_LEFT, Keys.ARROW_UP};
 //        while (j < 3) {
 //            System.out.println("Move #" + j);
-//            if (getBrowser().equals(FIREFOX)) {
-//                gridContainer.sendKeys(move[j]);
-//            } else {
-//                makeMove(gridContainer, move[j]);
-//            }
+//            makeMove(gridContainer,move[j]);
 //            printCurrentBoard();
 //            j++;
 //        }
-
         String[] currentScore = gameScore.getText().split("\n");
         System.out.println("Your total score is: " + currentScore[0] + "\nNice game!");
         LogUtils.addToLogFile("Your total score is: " + currentScore[0] + "\nNice game!");
@@ -133,14 +128,28 @@ public class Game2048MainPage extends BasePage {
         }
     }
 
-    public void makeMove(WebElement element, Keys move){
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(element).click();
-        actions.sendKeys(move).perform();
+    /**
+     * Make one game move depends on browser type
+     *
+     * @param element
+     *          the WebElement to interact with
+     * @param move
+     *          the Keys event to execute
+     */
+    private void makeMove(WebElement element, Keys move){
+        if (getDriver() instanceof FirefoxDriver) {
+            element.sendKeys(move);
+        } else if (getDriver() instanceof SafariDriver) {
+            sendSafariKeyEvent(move);
+        } else {
+            Actions actions = new Actions(getDriver());
+            actions.moveToElement(element).click();
+            actions.sendKeys(move).perform();
+        }
     }
 
     /**
-     * Prints end  board state (board state on last move)
+     * Prints end  board state (board state on the last move)
      */
     private void printEndBoardState() {
         long [][] tilesMatrix = new long[4][4];

@@ -4,7 +4,7 @@ import org.testng.annotations.Test;
 import pages.game2048.Game2048MainPage;
 
 /**
- * Created by mbp on 7/21/15.
+ * This class contains tests for http://gabrielecirulli.github.io/2048/ web site
  */
 public class Game2048MainPageTest extends BaseTest{
 
