@@ -15,9 +15,12 @@ public class BaseTest {
 
     @AfterClass
     public void tearDownTest() {
-        CustomWebDriver.getInstance().terminate();
+        CustomWebDriver.getInstance().terminate(); // close browser window after test run
     }
 
+    /**
+     * Set target browser via project.properties file
+     */
     public void setBrowser() {
         properties = DataProvider.getInstance().getProperties();
         System.setProperty("test.browser", properties.getProperty("default_browser"));

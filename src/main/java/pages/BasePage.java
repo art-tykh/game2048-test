@@ -21,6 +21,8 @@ import java.util.logging.Level;
  */
 public class BasePage {
 
+    public static final String FIREFOX = "firefox";
+
     public WebDriver driver;
 
     public BasePage() {
@@ -31,5 +33,7 @@ public class BasePage {
     public WebDriver getDriver() {
         return driver;
     }
+
+    public String getBrowser() { return CustomWebDriver.getInstance().getBrowser(); }
 
 }

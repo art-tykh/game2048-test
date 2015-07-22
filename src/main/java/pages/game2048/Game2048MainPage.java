@@ -38,6 +38,9 @@ public class Game2048MainPage extends BasePage {
     @FindBy(className = "tile")
     private List<WebElement> tiles;
 
+    @FindBy(className = "mailing-list-subscribe-button")
+    private WebElement mailingListSubscribeButton;
+
     public Game2048MainPage() {
         getDriver().get("http://gabrielecirulli.github.io/2048/");
     }
@@ -47,25 +50,30 @@ public class Game2048MainPage extends BasePage {
      */
     public void playGame() {
         RandomGameBot randomGameBot = new RandomGameBot();
-        long i = 1;
+        long i = 0;
         System.out.println("************* Game 2048 log *************\nInitial state");
         LogUtils.initLogFile("************* Game 2048 log *************\nInitial state\n");
         printCurrentBoard();
-       // while (i<3) {
         while (gameOverMessage.isEmpty()) {
-            System.out.println("Move #" + i);
+            System.out.println("Move #" + ++i);
+            LogUtils.addToLogFile("Move #" + i + "\n");
             Keys move = randomGameBot.getMove();
-            //makeMove(gridContainer, move);
-            gridContainer.sendKeys(move);
+            if (getBrowser().equals(FIREFOX)) {
+                gridContainer.sendKeys(move);
+            } else {
+                makeMove(gridContainer, move);
+            }
             printCurrentBoard();
-            i++;
         }
 //        int j = 0;
 //        Keys[] move = {Keys.ARROW_DOWN, Keys.ARROW_RIGHT, Keys.ARROW_LEFT, Keys.ARROW_UP};
 //        while (j < 3) {
 //            System.out.println("Move #" + j);
-//            //gridContainer.sendKeys(move[j]);
-//            makeMove(gridContainer, move[j]);
+//            if (getBrowser().equals(FIREFOX)) {
+//                gridContainer.sendKeys(move[j]);
+//            } else {
+//                makeMove(gridContainer, move[j]);
+//            }
 //            printCurrentBoard();
 //            j++;
 //        }
@@ -73,7 +81,7 @@ public class Game2048MainPage extends BasePage {
         String[] currentScore = gameScore.getText().split("\n");
         System.out.println("Your total score is: " + currentScore[0] + "\nNice game!");
         LogUtils.addToLogFile("Your total score is: " + currentScore[0] + "\nNice game!");
-        WaitUtils.sleep(5);
+        WaitUtils.sleep(3);
     }
 
     /**
@@ -138,6 +146,7 @@ public class Game2048MainPage extends BasePage {
         long [][] tilesMatrix = new long[4][4];
         int i = 0;
         int j = 0;
+        WaitUtils.waitingForElementDisplayed(mailingListSubscribeButton,5);
         for (WebElement tile : tiles) {
             tilesMatrix[i][j] = Long.valueOf(tile.getText()).longValue();
             i++;
