@@ -23,6 +23,8 @@ public class BaseTest {
      */
     public void setBrowser() {
         properties = DataProvider.getInstance().getProperties();
-        System.setProperty("test.browser", properties.getProperty("default_browser"));
+        if (System.getProperty("test.browser") == null) {
+            System.setProperty("test.browser", properties.getProperty("default_browser"));
+        }
     }
 }
