@@ -65,14 +65,6 @@ public class Game2048MainPage extends BasePage {
             makeMove(gridContainer,move);
             printCurrentBoard();
         }
-//        int j = 0;
-//        Keys[] move = {Keys.ARROW_DOWN, Keys.ARROW_RIGHT, Keys.ARROW_LEFT, Keys.ARROW_UP};
-//        while (j < 3) {
-//            System.out.println("Move #" + j);
-//            makeMove(gridContainer,move[j]);
-//            printCurrentBoard();
-//            j++;
-//        }
         String[] currentScore = gameScore.getText().split("\n");
         System.out.println("Your total score is: " + currentScore[0] + "\nNice game!");
         LogUtils.addToLogFile("Your total score is: " + currentScore[0] + "\nNice game!");
