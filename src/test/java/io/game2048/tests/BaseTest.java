@@ -15,7 +15,8 @@ public class BaseTest {
 
     @AfterClass
     public void tearDownTest() {
-        CustomWebDriver.getInstance().terminate(); // close browser window after test run
+        // close browser window after test is finished
+        CustomWebDriver.getInstance().terminate();
     }
 
     /**

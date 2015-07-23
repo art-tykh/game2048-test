@@ -52,28 +52,37 @@ public class Game2048MainPage extends BasePage {
      * Play simple game. Bot is doing random actions
      */
     public void playGame() {
+        // Initialize new Bot to play the game
         RandomGameBot randomGameBot = new RandomGameBot();
+        // move number
         long i = 0;
+        // Start new game
         newGameButton.click();
-        System.out.println("************* Game 2048 log *************\nInitial state");
         LogUtils.initLogFile("************* Game 2048 log *************\nInitial state\n");
         printCurrentBoard();
+        // The Bot will play the game till the "Game over" message appears
         while (gameOverMessage.isEmpty()) {
-            System.out.println("Move #" + ++i);
-            LogUtils.addToLogFile("Move #" + i + "\n");
+            LogUtils.addToLogFile("Move #" + ++i + "\n");
             Keys move = randomGameBot.getMove();
             makeMove(gridContainer,move);
             printCurrentBoard();
         }
         String[] currentScore = gameScore.getText().split("\n");
-        System.out.println("Your total score is: " + currentScore[0] + "\nNice game!");
         LogUtils.addToLogFile("Your total score is: " + currentScore[0] + "\nNice game!");
-        WaitUtils.sleep(3);
+        WaitUtils.sleep(1);
     }
 
     /**
-     * Analize current game grid and
+     * Analyzes current game grid and
      * prints current game board.
+     *
+     * getGameState() returns JSONObject like this:
+     * {"size":4,"cells":[[null,null,null,null],[null,null,null,{"position":{"x":1,"y":3},"value":4}],
+     * [null,null,{"position":{"x":2,"y":2},"value":2},null],[null,null,null,null]]}
+     *
+     * printCurrentBoard() parses this JSONObject and create matrix with current tiles values.
+     * This matrix represents game board.
+     *
      */
     private void printCurrentBoard() {
         long [][] tilesMatrix;
@@ -142,6 +151,11 @@ public class Game2048MainPage extends BasePage {
 
     /**
      * Prints end  board state (board state on the last move)
+     *
+     * At the last move we cannot get board state via getGameState(),
+     * so we need to analyze each tile element and put it value onto matrix
+     *
+     * This matrix represents game board final state.
      */
     private void printEndBoardState() {
         long [][] tilesMatrix = new long[4][4];
@@ -149,7 +163,7 @@ public class Game2048MainPage extends BasePage {
         int j = 0;
         WaitUtils.waitingForElementDisplayed(mailingListSubscribeButton,5);
         for (WebElement tile : tiles) {
-            tilesMatrix[i][j] = Long.valueOf(tile.getText()).longValue();
+            tilesMatrix[i][j] = Long.valueOf(tile.getText());
             i++;
             if (i > 3) {
                 i = 0;
@@ -169,13 +183,10 @@ public class Game2048MainPage extends BasePage {
      */
     private void printBoard(long[][] board, int size) {
         for (int k = 0; k < size; k++) {
-            System.out.print(" | ");
             LogUtils.addToLogFile(" | ");
             for (int l = 0; l < size; l++) {
-                System.out.print(board[k][l] + " | ");
                 LogUtils.addToLogFile(board[k][l] + " | ");
             }
-            System.out.print("\n");
             LogUtils.addToLogFile("\n");
         }
     }

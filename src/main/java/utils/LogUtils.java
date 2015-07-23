@@ -46,6 +46,7 @@ public class LogUtils {
      */
     private static void writeToFile(String text, boolean isFileExists) {
         try {
+            System.out.print(text);
             FileWriter fstream = new FileWriter("test-output/game2048_log.txt", isFileExists);
             writer = new BufferedWriter(fstream);
             writer.write(text);

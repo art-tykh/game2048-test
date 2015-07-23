@@ -39,7 +39,10 @@ public class BasePage {
      *          the Keys event to execute
      */
     public void sendSafariKeyEvent(Keys move) {
-        String [] keyMatcher = move.name().split("_"); // Change Keys move to JS format
+        // Change Keys move to JS format
+        String [] keyMatcher = move.name().split("_");
+
+        // JS script that emulate Keys events.
         String script = "fireKey(arguments[0]);\n"
                 + "function fireKey(arrow)\n"
                 + "{\n"
